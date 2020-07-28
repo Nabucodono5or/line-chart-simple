@@ -2,6 +2,7 @@ import { select, selectAll } from "d3-selection";
 import { csv } from "d3-fetch";
 import { scaleLinear } from "d3-scale";
 import { axisBottom, axisLeft } from "d3-axis";
+import { line, curveCardinal, curveNatural } from "d3-shape";
 
 // select("body").append("h1").html("Hello World");
 
@@ -16,6 +17,34 @@ function lineChart(incomingData) {
 
   let xAxis = axisBottom(xScale).tickSize(-490).tickPadding(10);
   let yAxis = axisLeft(ySCale).tickSize(-470).tickPadding(10);
+
+  let tweetsGenerator = line()
+    .x((d) => {
+      return xScale(d.day);
+    })
+    .y((d) => {
+      return ySCale(d.tweets);
+    });
+
+  let retweetsGenerator = line()
+    .x((d) => {
+      return xScale(d.day);
+    })
+    .y((d) => {
+      return ySCale(d.retweets);
+    });
+
+  let favoritesGenerator = line()
+    .x((d) => {
+      return xScale(d.day);
+    })
+    .y((d) => {
+      return ySCale(d.favorites);
+    });
+
+  tweetsGenerator.curve(curveNatural);
+  retweetsGenerator.curve(curveNatural);
+  favoritesGenerator.curve(curveNatural);
 
   select("svg")
     .append("g")
@@ -70,4 +99,19 @@ function lineChart(incomingData) {
     .attr("cy", (d) => {
       return ySCale(d.favorites);
     });
+
+  select("svg")
+    .append("path")
+    .attr("class", "tweetsLine")
+    .attr("d", tweetsGenerator(incomingData));
+
+  select("svg")
+    .append("path")
+    .attr("class", "retweetsLine")
+    .attr("d", retweetsGenerator(incomingData));
+
+  select("svg")
+    .append("path")
+    .attr("class", "favoritesLine")
+    .attr("d", favoritesGenerator(incomingData));
 }
