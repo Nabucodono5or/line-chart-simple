@@ -1,0 +1,17 @@
+.xAxis, .yAxis {
+    opacity: 0.5;
+}
+
+
+
+.tweets {
+  fill: rgba(0, 255, 21, 0.541);
+}
+
+.retweets {
+  fill: rgba(255, 230, 0, 0.74);
+}
+
+.favorites {
+  fill: rgba(141, 19, 141, 0.774);
+}
